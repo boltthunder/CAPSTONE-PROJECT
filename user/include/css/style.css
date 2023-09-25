@@ -1,0 +1,47 @@
+ .header{
+    text-decoration: none;
+    color: black;
+  }
+
+  .green{
+    Color:#325C66;
+  }
+
+  .navbar-active{
+    color: white;
+  }
+ 
+  .nav-pills .nav-link.active, .nav-pills .show.nav-link {
+    color: white;
+    background-color: #2c2c43 !important;
+}
+h1 {
+  font-family: apertura, Arial, Helvetica, sans-serif;
+}
+h2 {
+  font-family: apertura, Arial, Helvetica, sans-serif;
+}
+h5 {
+  font-family: apertura, Arial, Helvetica, sans-serif;
+}
+
+h6 {
+  font-family: apertura, Arial, Helvetica, sans-serif;
+}
+
+p {
+  font-family: apertura, Arial, Helvetica, sans-serif;
+}
+
+small {
+  font-family: apertura, Arial, Helvetica, sans-serif;
+}
+
+.no-margin {
+  margin: 0 !important;
+}
+
+@font-face {
+  font-family: "apertura";
+  src: url(../fonts/Apertura-Regular.otf);
+}

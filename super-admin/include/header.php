@@ -103,18 +103,21 @@
                 </div>
             </li>
 
-            <!-- Nav Item - Utilities Collapse Menu -->
-            <li class="nav-item <?php if($_SESSION['title']=="Manage Admin" || $_SESSION['title']=="Manage User"){echo "active";}?>">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
-                    <i class="fas fa-fw fa-wrench"></i>
-                    <span>Manage Account</span>
+
+            <li class="nav-item <?php if($_SESSION['title']=="Manage Admin"){echo "active";}?>">
+                <a class="nav-link <?php if($_SESSION['title']=="Manage Admin"){echo "active";}?>" href="manage-admin.php">
+                    <i class="fas fa-fw fa-user"></i>
+                    <span>Manage Admin</span></a>
+            </li>
+            <li class="nav-item <?php if($_SESSION['title']=="Manage User"){echo "active";}?>">
+                <a class="nav-link <?php if($_SESSION['title']=="Manage User"){echo "active";}?>" href="manage-user.php">
+                    <i class="fas fa-fw fa-user"></i>
+                    <span>Manage User 
+                        <?php $checking = new check_user(); 
+                                $checking->checking();
+                        ?>
+                    </span>
                 </a>
-                <div id="collapseUtilities" class="collapse <?php if($_SESSION['title']=="Manage Admin" || $_SESSION['title']=="Manage User"){echo "show";}?>" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Account Management:</h6>
-                        <a class="collapse-item <?php if($_SESSION['title']=="Manage Admin"){echo "active";}?>" href="manage-admin.php">Manage Admin</a>
-                    </div>
-                </div>
             </li>
 
             <!-- Divider -->
@@ -131,29 +134,19 @@
                     <i class="fas fa-fw fa-folder"></i>
                     <span>Event Management</span>
                 </a>
-                <div id="collapsePages" class="collapse <?php if($_SESSION['title']=="Election Management" || $_SESSION['title']=="Event Management"){echo "show";}?>" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+                <div id="collapsePages" class="collapse <?php if($_SESSION['title']=="Election Management" || $_SESSION['title']=="Event Management" || $_SESSION['title']=="services"){echo "show";}?>" aria-labelledby="headingPages" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Manage:</h6>
                         <a class="collapse-item <?php if($_SESSION['title']=="Election Management"){echo "active";}?>" href="election.php">Manage election</a>
                         <a class="collapse-item <?php if($_SESSION['title']=="Event Management"){echo "active";}?>" href="event.php">Manage Event</a>
+                        <a class="collapse-item <?php if($_SESSION['title']=="services"){echo "active";}?>" href="services.php">Services</a>
                         <!-- <a class="collapse-item" href="#">Job Reccomendation</a> -->
                         
                     </div>
                 </div>
             </li>
 
-            <li class="nav-item <?php if($_SESSION['title']=="services"){echo "active";}?>">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#PublicNotice" aria-expanded="true" aria-controls="PublicNotice">
-                    <i class="fas fa-fw fa-folder"></i>
-                    <span>Services</span>
-                </a>
-                <div id="PublicNotice" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Manage:</h6>
-                        <a class="collapse-item <?php if($_SESSION['title']=="services"){echo "active";}?>" href="services.php">Services</a>
-                    </div>
-                </div>
-            </li>
+            
             <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">
 

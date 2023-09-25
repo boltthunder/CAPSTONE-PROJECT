@@ -112,6 +112,54 @@ if(isset($_POST['add_barangay']) && $_POST['function'] == "add_barangay"){
         echo json_encode($data);
     }
 
+}else if(isset($_POST['value']) && $_POST['function'] == "approved_status"){
+    $value = secured($_POST['value']);
+
+    $approved_admin = new approved_admin();
+    $result = $approved_admin->updateData($value);
+
+    if($result){
+        $data = [
+            'status' => 200,
+            'message' => "Successfully Update",
+        ];
+        echo json_encode($data);
+        return false;
+    }else{
+        $data = [
+            'message' => "There's Something Wrong to Update Data",
+        ];
+        echo json_encode($data);
+        return false;
+    }
+
+}else if(isset($_POST['value']) && $_POST['function'] == "status_disapproved"){
+    $value = secured($_POST['value']);
+
+    $disapproved_admin = new disapproved_admin();
+    $result = $disapproved_admin->updateData($value);
+
+    if($result){
+        $data = [
+            'status' => 200,
+            'message' => "Successfully Update",
+        ];
+        echo json_encode($data);
+        return false;
+    }else{
+        $data = [
+            'message' => "There's Something Wrong to Update Data",
+        ];
+        echo json_encode($data);
+        return false;
+    }
+}else if(isset($_POST['delete_user']) && $_POST['function'] == "delete_user"){
+    $acc_id = secured($_POST['acc_id']);
+    $type_user = secured($_POST['type_user']);
+
+    $delete_admin = new delete_user();
+    $delete_admin->deleteData($acc_id,$type_user);
+
 }else {
     header("Location: index.php");
 }

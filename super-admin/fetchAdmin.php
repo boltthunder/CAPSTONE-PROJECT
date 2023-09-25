@@ -118,10 +118,12 @@ include 'config/security.php';
         </div> 
     </div>
 
-<script src="../vendor/datatables/jquery.dataTables.min.js"></script>
-<script src="../vendor/datatables/dataTables.bootstrap4.min.js"></script>
-<script src="../js/demo/datatables-demo.js"></script>
-
+    <script src="../vendor/datatables/jquery.dataTables.min.js"></script>
+    <script src="../vendor/datatables/dataTables.bootstrap4.min.js"></script>
+    <script src="../js/demo/datatables-demo.js"></script>
+    <script src="../include/script/function.js" ></script>
+    <script src="../node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+    
 <script>
     // Show Info Modal
     $(document).on('click','#view_admin',function(){

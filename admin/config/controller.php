@@ -69,14 +69,14 @@
                 $fetch_info = $fetch->fetch();
                 if($value == "All"){
                     $stmt = $this->connect()->query("SELECT * FROM `tbl_org` WHERE org_brgy='".$fetch_info['acc_address']."' ");
-                    if($stmt){
+                    if($stmt->rowCount()){
                         return $stmt;
                     }else {
                         return false;
                     }
                 }else {
                     $stmt = $this->connect()->query("SELECT * FROM `tbl_org` WHERE org_brgy='".$fetch_info['acc_address']."' AND org_status='$value' ");
-                    if($stmt){
+                    if($stmt->rowCount()){
                         return $stmt;
                     }else {
                         return false;

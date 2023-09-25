@@ -22,7 +22,7 @@ include 'config/security.php';
                     $fetchOrg = new orgFetch();
                     $res_fetch = $fetchOrg->fetchData($value);
 
-                    if($res_fetch->rowCount()){
+                    if($res_fetch){
                         while($row = $res_fetch->fetch()){
                             ?>
                             <tr>

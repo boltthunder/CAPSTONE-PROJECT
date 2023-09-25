@@ -24,6 +24,9 @@ class logginIn extends Database
 
                 $_SESSION['user_id'] = $fetch['acc_admin_id'];
                 $_SESSION['user_type'] = $fetch['acc_type'];
+                $_SESSION['user_fname'] = $fetch['acc_fname'];
+                $_SESSION['user_mname'] = $fetch['acc_mname'];
+                $_SESSION['user_lname'] = $fetch['acc_lname'];
                 header("Location: admin/index.php");
 
             } elseif ($fetch['acc_type'] == "user") {

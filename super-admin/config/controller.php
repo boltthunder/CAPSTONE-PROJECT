@@ -280,4 +280,91 @@ class delete_admin extends Database{
         }
     }
 }
+class fetchUser extends Database{
+    private $value;
+    public function fetchData($value){
+        $fetch = $this->connect()->query("SELECT * FROM tbl_accounts WHERE acc_admin_id='".$_SESSION['user_id']."' ");
+        if($fetch->rowCount()){
+            $fetch_info = $fetch->fetch();
+            if($value =="All"){
+                $stmt = "SELECT * FROM tbl_accounts WHERE acc_type='user' ";
+                $stmt_run = $this->connect()->query($stmt);
+        
+                if($stmt_run->rowCount()){
+                    return $stmt_run;
+                }else{
+                    return false;
+                }
+            }
+            else {
+                $stmt = "SELECT * FROM tbl_accounts WHERE acc_type='user' AND acc_status='$value' ";
+                $stmt_run = $this->connect()->query($stmt);
+        
+                if($stmt_run->rowCount()){
+                    return $stmt_run;
+                }else{
+                    return false;
+                }
+            }
+        }
+    }
+}
+class approved_admin extends Database{
+    private $value;
+    public function updateData($value){
+        $update_data = $this->connect()->query("UPDATE `tbl_accounts` SET `acc_status`='Accept' WHERE acc_admin_id='$value' ");
+
+        if($update_data){
+            return $update_data;
+        }else{
+            return false;
+        }
+    }
+}
+class disapproved_admin extends Database{
+    private $value;
+    public function updateData($value){
+        $update_data = $this->connect()->query("UPDATE `tbl_accounts` SET `acc_status`='Decline' WHERE acc_admin_id='$value' ");
+
+        if($update_data){
+            return $update_data;
+        }else{
+            return false;
+        }
+    }
+}
+class delete_user extends Database{
+    private $acc_id,$type_user;
+    public function deleteData($acc_id,$type_user){
+        $delete_data = $this->connect()->query("DELETE FROM `tbl_accounts` WHERE acc_id='$acc_id' ");
+        if($delete_data){
+            ?>
+                <script>
+                    alert("Successfully Deleted Data");
+                    window.location.href="manage-user.php";
+                </script>
+            <?php 
+        }else{
+            ?>
+                <script>
+                    alert("There's Something Wrong to delete data");
+                    window.location.href="manage-user.php";
+                </script>
+            <?php 
+        }
+    }
+}
+
+class check_user extends Database{
+    public function checking(){
+        $stmt = "SELECT * FROM tbl_accounts WHERE acc_type='user' AND acc_status='Pending' ";
+        $stmt_run = $this->connect()->query($stmt);
+        if($stmt_run->rowCount()>0){
+           echo "<span class='badge badge-dark'>".$stmt_run->rowCount()."</span>";
+
+        }else{
+            return false;   
+        }
+    }
+}
 ?>

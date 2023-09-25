@@ -5,7 +5,7 @@ unset($_SESSION['title']);
 $_SESSION['title'] = "Event Management";
 
 include 'include/header.php'; 
-include 'config/controller.php';
+
  ?>
 <!-- Begin Page Content -->
 <div class="container-fluid">

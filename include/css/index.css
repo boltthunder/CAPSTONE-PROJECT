@@ -1,3 +1,13 @@
+.img-logo {
+    width: 50px !important;
+    height: 50px !important;
+}
+
+.img-holder {
+    padding: 0 !important;
+    border-radius: 50% !important;
+}
+
 .display-mode {
     display: block !important;
 }
@@ -11761,4 +11771,8 @@ footer.sticky-footer .copyright {
 
 body.sidebar-toggled footer.sticky-footer {
     width: 100%;
+}
+
+.title {
+    font-weight: 600 !important;
 }
