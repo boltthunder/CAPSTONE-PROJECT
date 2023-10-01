@@ -1,8 +1,5 @@
 <?php
 session_start();
-include '../config/db_conn.php';
-// include 'controller.php';
-
 function secured($data){
     $data = trim($data);
     $data = stripslashes($data);

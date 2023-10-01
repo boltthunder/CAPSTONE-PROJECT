@@ -1,14 +1,14 @@
 <?php
-include 'config/security.php';
+include 'include/autoload.php';
+
 unset($_SESSION['title']);
-$_SESSION['title'] = "ORGANIZATION LIST";
+$_SESSION['title'] = "HOME";
 
 include 'include/header.php';
 include 'include/navbar.php';
 ?>
 
 </div>
-
 <div class="container py-5" >
         <div class="row">
         <div id="carouselExampleCaptions" class="carousel slide">

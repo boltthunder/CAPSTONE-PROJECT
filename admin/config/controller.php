@@ -1,12 +1,12 @@
 <?php
     
     class memberOrg extends Database{
-        public function fetchData(){
+        public function fetchData($org){
             $fetch = $this->connect()->query("SELECT * FROM tbl_accounts WHERE acc_admin_id='".$_SESSION['user_id']."' ");
 
             if($fetch->rowCount()){
                 $fetch_info = $fetch->fetch();
-                $member_list = $this->connect()->query("SELECT * FROM `tbl_accounts` WHERE acc_address='".$fetch_info['acc_address']."' AND acc_type='user' AND acc_status='Accept' ");
+                $member_list = $this->connect()->query("SELECT * FROM `tbl_accounts` WHERE acc_address='".$fetch_info['acc_address']."' AND acc_org='$org' AND acc_type='user' AND acc_status='Accept' ");
 
                 if($member_list->rowCount()){
                     return $member_list;
@@ -17,20 +17,19 @@
         }
     }
     class add_org extends Database{
-        private $org_name,$org_date,$org_press,$org_vpress;
-        public function addData($org_name,$org_date,$org_press,$org_vpress){
+        public function addData($org_name,$org_date){
             $fetch = $this->connect()->query("SELECT * FROM tbl_accounts WHERE acc_admin_id='".$_SESSION['user_id']."' ");
 
             if($fetch->rowCount()){
                 $fetch_info = $fetch->fetch();
 
-                $stmt = "SELECT * FROM tbl_org WHERE org_name='$org_name' AND org_brgy='".$fetch_info['acc_address']."' AND org_pres='$org_press' AND org_vpress='$org_vpress' ";
+                $stmt = "SELECT * FROM tbl_org WHERE org_name='$org_name' AND org_brgy='".$fetch_info['acc_address']."'  ";
                 $stmt_run = $this->connect()->query($stmt);
         
                 if($stmt_run->rowCount()<=1){
                    
-                    $add_data = "INSERT INTO `tbl_org`(`org_name`, `org_establish`, `org_brgy`, `org_pres`, `org_vpress`,`org_status`) 
-                    VALUES ('$org_name','$org_date','".$fetch_info['acc_address']."','$org_press','$org_vpress','Pending')";
+                    $add_data = "INSERT INTO `tbl_org`(`org_name`, `org_establish`, `org_brgy`,`org_status`) 
+                    VALUES ('$org_name','$org_date','".$fetch_info['acc_address']."','Pending')";
                     $add_data_run = $this->connect()->query($add_data);
         
                     if($add_data_run){
@@ -104,13 +103,13 @@ class modalOrg extends Database{
     }
 }
 class orgUpdate extends Database{
-    private $org_id,$org_name,$org_date,$org_press,$org_vpress;
-    public function updateData($org_id,$org_name,$org_date,$org_press,$org_vpress){
+    private $org_id,$org_name,$org_date;
+    public function updateData($org_id,$org_name,$org_date){
         $fetch = $this->connect()->query("SELECT * FROM tbl_accounts WHERE acc_admin_id='".$_SESSION['user_id']."' ");
         if($fetch->rowCount()){
             $fetch_info = $fetch->fetch();
 
-            $update_data = "UPDATE `tbl_org` SET `org_name`='$org_name',`org_establish`='$org_date',`org_pres`='$org_press',`org_vpress`='$org_vpress' WHERE org_id='$org_id' AND org_brgy='".$fetch_info['acc_address']."' ";
+            $update_data = "UPDATE `tbl_org` SET `org_name`='$org_name',`org_establish`='$org_date' WHERE org_id='$org_id' AND org_brgy='".$fetch_info['acc_address']."' ";
             $update_data_run = $this->connect()->query($update_data);
     
             if($update_data_run){
@@ -237,6 +236,116 @@ class delete_admin extends Database{
                     window.location.href="manage-user.php";
                 </script>
             <?php 
+        }
+    }
+}
+class check_user extends Database{
+    public function checking(){
+        $fetch = $this->connect()->query("SELECT * FROM tbl_accounts WHERE acc_admin_id='".$_SESSION['user_id']."' ");
+        if($fetch->rowCount()){
+            $fetch_info = $fetch->fetch();
+
+            $stmt = "SELECT * FROM tbl_accounts WHERE acc_type=? AND acc_address=? AND acc_status=? ";
+            $stmt_run = $this->connect()->prepare($stmt);
+            $stmt_run->execute(['user',$fetch_info['acc_address'],'Pending']);
+            if($stmt_run->rowCount()>0){
+               echo "<span class='badge badge-dark'>".$stmt_run->rowCount()."</span>";
+    
+            }else{
+                return false;   
+            }
+        
+        }
+    }
+}
+
+class addOrgMem extends Database{
+    public function addData($acc_id,$position){
+        $fetch_info = $this->connect()->prepare("SELECT * FROM tbl_accounts WHERE acc_admin_id=?");
+        $fetch_info->execute([$acc_id]);
+
+        if($fetch_info->rowCount()==1){
+            $fetch_info = $fetch_info->fetch();
+
+            $check_member = $this->connect()->prepare("SELECT * FROM tbl_org_member WHERE mem_orgname=? AND mem_name=? AND mem_position=?");
+            $check_member->execute([$fetch_info['acc_org'],$fetch_info['acc_fname'].' '.$fetch_info['acc_mname'].' '.$fetch_info['acc_lname'],$position]);
+
+            if($check_member->rowCount()==1){
+                ?>
+                    <script>
+                        alert("Already Added Data");
+                        window.location.href="view_member_org.php?org_name=<?=$fetch_info['acc_org']?>";
+                    </script>
+                <?php
+            }else{
+                $insert_data = $this->connect()->prepare("INSERT INTO `tbl_org_member`(`mem_orgname`,`mem_id_name`,`mem_name`, `mem_birth`, `mem_position`) 
+                VALUES (?,?,?,?,?)");
+                $insert_data->execute([$fetch_info['acc_org'],$acc_id,$fetch_info['acc_fname'].' '.$fetch_info['acc_mname'].' '.$fetch_info['acc_lname'],$fetch_info['acc_birth'],$position]);
+
+                if($insert_data){
+                    ?>
+                        <script>
+                            alert('Successfully Added Data');
+                            window.location.href="view_member_org.php?org_name=<?=$fetch_info['acc_org']?>"
+                        </script>
+                    <?php
+                }else{
+                    ?>
+                        <script>
+                            alert("There's Something Wrong To Add Data");
+                            window.location.href="view_member_org.php?org_name=<?=$fetch_info['acc_org']?>"
+                        </script>
+                    <?php
+                }
+                    
+            }
+        }
+    }
+}
+
+class fetchOrgMem extends Database{
+    public function fetchData($value,$org_name){
+        if($value =="All"){
+            $member_check = $this->connect()->prepare("SELECT * FROM tbl_org_member WHERE mem_orgname=?");
+            $member_check->execute([$org_name]);
+    
+            if($member_check->rowCount()>0){
+                return $member_check;
+            }else{
+                return false;
+            }
+        }else{
+            $member_check = $this->connect()->prepare("SELECT * FROM tbl_org_member WHERE mem_orgname=? AND mem_position=?");
+            $member_check->execute([$org_name,$value]);
+    
+            if($member_check->rowCount()>0){
+                return $member_check;
+            }else{
+                return false;
+            }
+        }
+    }
+}
+
+class deleteOrgMem extends Database{
+    public function deleteData($acc_id,$acc_org){
+        $delete = $this->connect()->prepare("DELETE FROM `tbl_org_member` WHERE mem_id_name=?");
+        $delete->execute([$acc_id]);
+
+        if($delete){
+            ?>
+                <script>
+                    alert("Successfully Deleted Data");
+                    window.location.href="view_member_org.php?org_name=<?=$acc_org?>";
+                </script>
+            <?php
+        }else{
+            ?>
+                <script>
+                    alert("There's Something Wrong to Delete Data");
+                    window.location.href="view_member_org.php?org_name=<?=$acc_org?>";
+                </script>
+            <?php
         }
     }
 }

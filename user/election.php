@@ -1,5 +1,6 @@
 <?php
-include 'config/security.php';
+include 'include/autoload.php';
+
 unset($_SESSION['title']);
 $_SESSION['title'] = "ELECTION";
 

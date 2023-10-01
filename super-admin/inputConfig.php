@@ -160,7 +160,8 @@ if(isset($_POST['add_barangay']) && $_POST['function'] == "add_barangay"){
     $delete_admin = new delete_user();
     $delete_admin->deleteData($acc_id,$type_user);
 
-}else {
+}
+else {
     header("Location: index.php");
 }
 ?>

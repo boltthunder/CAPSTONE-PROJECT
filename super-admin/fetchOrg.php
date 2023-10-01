@@ -26,7 +26,7 @@ include 'config/security.php';
                         while($row = $res_fetch->fetch()){
                             ?>
                             <tr>
-                                <td><button class="custom-hover" id="viewOrganization" value="<?=$row['org_id']?>"><?=$row['org_name']?></button></td>
+                                <td><?=$row['org_name']?></td>
                                 <td><?=$row['org_establish']?></td>
                                 <?php
                                     if($row['org_status']=="Accept"){
@@ -45,6 +45,10 @@ include 'config/security.php';
                                             <button type="button" class="btn btn-success btn-sm bg-success" value="<?=$row['org_id']?>" id="status_approved" title="Accept"><i class="fa fa-check"></i></button>
                                             <button type="button" class="btn btn-danger btn-sm bg-danger" value="<?=$row['org_id']?>" id="status_disapproved" title="Decline"><i  class="fa fa-times"></i></button>
                                         <?php
+                                        }else{
+                                            ?>
+                                                <button type="button" class="btn btn-success btn-sm bg-success" id="viewOrganization" value="<?=$row['org_name']?>"><span><i class="fa fa-eye"></i></span></button>
+                                            <?php
                                         }
                                    ?>
                                 </td>
@@ -74,33 +78,15 @@ include 'config/security.php';
                                 <div>
                                     <div class="form-group">
                                         <label for="">Organization Name</label>
-                                        <input type="text" name="org_name" id="org_name" class="form-control org-box" disabled>
+                                        <input type="text" name="org_name" id="org_name" class="form-control text-center org-box" disabled>
                                     </div>
                                     <div class="form-group">
                                         <label for="">Year Establish:</label>
-                                        <input type="date" name="org_date" id="org_date" class="form-control" disabled>
+                                        <input type="date" name="org_date" id="org_date" class="form-control text-center" disabled>
                                     </div>
                                     <div>
                                         <label for="">Brangay Name</label>
-                                        <select name="org_brgy" id="org_brgy" class="form-control org-box appearance-none text-center" disabled>
-                                            <?php
-                                            $fetch_user = new fetchBrgy();
-                                            $result = $fetch_user->fetchData();
-
-                                            if($result)
-                                            {
-                                                while($fetch = $result->fetch())
-                                                {
-            
-                                                        ?>
-                                                            <option selected><?=$fetch['brgy_name']?></option>
-                                                        <?php
-
-                                                   
-                                                }
-                                            }
-                                            ?>
-                                        </select>
+                                        <input name="org_brgy" id="org_brgy" class="form-control text-center" disabled>
 
                                         <!-- <input type="text"> -->
                                     </div>
@@ -109,11 +95,11 @@ include 'config/security.php';
                                     </div>
                                     <div class="form-group">
                                         <label for="">President:</label>
-                                        <input type="text" name="org_press" id="org_press" class="form-control" disabled>
+                                        <input type="text" name="org_press" id="org_press" class="form-control text-center" disabled>
                                     </div>
                                     <div class="form-group">
                                         <label for="">Vice-President:</label>
-                                        <input type="text" name="org_vpress" id="org_vpress" class="form-control" disabled>
+                                        <input type="text" name="org_vpress" id="org_vpress" class="form-control text-center" disabled>
                                     </div>
                                 </div>
                             
@@ -128,7 +114,7 @@ include 'config/security.php';
 <script>
     $(document).on('click','#viewOrganization',function(){
         var value = $(this).val();
-        // alert(value);
+        alert(value);
         $.ajax({
             method:"POST",
             url:"inputConfig.php",
@@ -138,12 +124,14 @@ include 'config/security.php';
 
                 if(res.status == 200){
                     $("#view-organization").modal('show');
-                    $("#org_id").val(res.data.org_id);
-                    $("#org_name").val(res.data.org_name);
-                    $("#org_date").val(res.data.org_establish);
-                    $("#org_brgy").val(res.data.org_brgy);
-                    $("#org_press").val(res.data.org_pres);
-                    $("#org_vpress").val(res.data.org_vpress); 
+                    // $("#org_id").val(res.data.org_id);
+                    // $("#org_name").val(res.data.org_name);
+                    // $("#org_date").val(res.data.org_establish);
+                    // $("#org_brgy").val(res.data.org_brgy);
+                    // $("#org_press").val(res.data.org_pres);
+                    // $("#org_vpress").val(res.data.org_vpress); 
+                }else{
+                    alert("asd");
                 }
             }
         });

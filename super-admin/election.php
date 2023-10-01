@@ -28,42 +28,40 @@ if ($result->rowCount() <= 0) {
 
   </div>
   <div class="d-flex justify-content-end pb-2">
-    <div>
-      <label class="px-2">Barangay </label>
+        <div>
+            <label class="px-2">Barangay </label>
 
-      <select class="custom-select custom-select-sm select2" style="width: 150px; height: auto;" id="brgy_list">
-        <option class="text-center" selected value="All">All</option>
-        <?php
-        $fetch_user = new fetchBrgy();
-        $result = $fetch_user->fetchData();
+            <select class="custom-select custom-select-sm select2" style="width: 150px; height: auto;" id="brgy_list">
+                <option class="text-center" selected value="All">All</option>
+                <?php
+                $fetch_user = new fetchBrgy();
+                $result = $fetch_user->fetchData();
 
-        if ($result) {
-          while ($row = $result->fetch()) {
-            ?>
-            <option class="text-center">
-              <?= $row['brgy_name'] ?>
-            </option>
-            <?php
-          }
-        }
-        ?>
-      </select>
-    </div>
+                if ($result) {
+                    while ($row = $result->fetch()) {
+                        ?>
+                        <option class="text-center">
+                            <?= $row['brgy_name'] ?>
+                        </option>
+                        <?php
+                    }
+                }
+                ?>
+            </select>
+        </div>
   </div>
 
   <div class="add-box flex justify-center grid-cols-1 h-fit-content">
     <div class="card shadow mb-4 flex justify-center w-[100%] ">
       <div class="card-body">
         <div class="table-responsive" id="result">
-
+          
         </div>
       </div>
     </div>
   </div>
 
 </div><!-- /.container-fluid -->
-
-<?php include 'include/in-footer.php'; ?>
 <div class="modal fade" id="run-officer" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content bg-gray-200">
@@ -183,3 +181,23 @@ if ($result->rowCount() <= 0) {
     </div>
   </div>
 </div>
+<?php include 'include/in-footer.php'; ?>
+
+
+<script>
+  $(document).ready(function(){
+    $("#brgy_list").change(function(){
+      var value = document.getElementById("brgy_list").value;
+      // alert(value);
+      $.ajax({
+        type:"GET",
+        url:"fetchOrgMem.php",
+        data:{brgy_list:value, function:"fetchOrgMem"},
+        success:function(response){
+            $("#result").html(response);
+        }
+      })
+    });
+      $("#brgy_list").trigger("change");
+  })
+</script>

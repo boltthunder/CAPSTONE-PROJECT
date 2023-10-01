@@ -101,6 +101,17 @@
                 </div>
             </li>
 
+            <!-- Nav Item - Utilities Collapse Menu -->
+            <li class="nav-item <?php if($_SESSION['title']=="Manage User"){echo "active";}?>">
+                <a class="nav-link" href="manage-user.php">
+                    <i class="fas fa-fw fa-user"></i>
+                    <span>Manage User
+                        <?php $checking = new check_user(); 
+                                $checking->checking();
+                        ?>
+                    </span></a>
+            </li>
+
             <!-- Divider -->
             <hr class="sidebar-divider">
 

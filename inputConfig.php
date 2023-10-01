@@ -25,12 +25,19 @@ if(isset($_POST['logging_in']) && secured($_POST['function'] == "logging_in")){
     $age = secured($_POST['age']);
     $birthdate = secured($_POST['birth']);
     $address = secured($_POST['address']);
+    $org = secured($_POST['org']);
     $uname = secured($_POST['uname']);
     $password = secured($_POST['password']);
 
     $create_user = new create_user();
-    $create_user->addData($profile_img,$fname,$mname,$lname,$email,$phone,$age,$birthdate,$address,$uname,$password);
-}else{
+    $create_user->addData($profile_img,$fname,$mname,$lname,$email,$phone,$age,$birthdate,$address,$org,$uname,$password);
+}else if(isset($_POST['value']) && secured($_POST['function'] == "getOrg")){
+    $value = secured($_POST['value']);
+
+    $fetchOrg = new fetchOrg();
+    $fetchOrg->fetchData($value);
+}
+else{
     header("Location: index.php");
 }
 ?>

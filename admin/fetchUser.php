@@ -14,6 +14,8 @@ include 'config/security.php';
                     <th>Email</th>
                     <th>Birthday</th>
                     <th>Address</th>
+                    <th>Status</th>
+                    <th>Option</th>
 
                 </tr>
             </thead>
@@ -29,12 +31,6 @@ include 'config/security.php';
                                 <td>
                                     <button  class="custom-hover" id="view_admin" value="<?=$row['acc_admin_id']?>">
                                         <?php echo $row['acc_fname']." ".$row['acc_mname']." ".$row['acc_lname']?>
-                                        <?php $checking = new check_user(); 
-                                               $result = $checking->checking();
-                                               if($result){
-                                                echo "<span class='badge badge-dark'><small>New</small></span>";    
-                                               }
-                                        ?>
                                     </button>
                                 </td>
                                 <td><?=$row['acc_age']?></td>
@@ -42,6 +38,28 @@ include 'config/security.php';
                                 <td><?=$row['acc_email']?></td>
                                 <td><?=$row['acc_birth']?></td>
                                 <td><?=$row['acc_address']?></td>
+                                
+                                    <?php
+                                        if($row['acc_status']=="Accept"){
+                                            echo"<td class='bg-success text-white'>".$row['acc_status']."</td>";
+                                        }
+                                        else if($row['acc_status']=="Decline"){
+                                            echo"<td class='bg-danger text-white'>".$row['acc_status']."</td>";
+                                        }else{
+                                            echo"<td class='bg-secondary text-white'>".$row['acc_status']."</td>";
+                                        }
+                                    ?>
+                            
+                                <td class="text-center">
+                                   <?php
+                                            if($row['acc_status']=="Pending"){
+                                            ?>
+                                                <button type="button" class="btn btn-success btn-sm bg-success" value="<?=$row['acc_admin_id']?>" id="status_approved" title="Accept"><i class="fa fa-check"></i></button>
+                                                <button type="button" class="btn btn-danger btn-sm bg-danger" value="<?=$row['acc_admin_id']?>" id="status_disapproved" title="Decline"><i  class="fa fa-times"></i></button>
+                                            <?php
+                                        }
+                                   ?>
+                                </td>
                             </tr>
                             <?php
                         }
@@ -112,24 +130,25 @@ include 'config/security.php';
                                 <label for="">Address</label>
                                 <input type="text" name="address" id="address" class="form-control" disabled>
                             </div>
+                            <div class="form-group sm:ml-3">
+                                <label for="">Organization</label>
+                                <input type="text" name="org" id="org" class="form-control" disabled>
+                            </div>
                         </div>
                     </div>  
 
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-secondary bg-secondary" type="button" data-dismiss="modal">Close</button>
+                    <button class="btn btn-secondary bg-secondary" type="button" data-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-danger bg-danger" name="delete_user">Delete</button>
                 </div>
             </form>
         </div> 
     </div>
 
-    <!-- Page level custom scripts -->
-    <script src="../vendor/datatables/jquery.dataTables.min.js"></script>
-    <script src="../vendor/datatables/dataTables.bootstrap4.min.js"></script>
-    <script src="../js/demo/datatables-demo.js"></script>
-    <script src="../include/script/function.js" ></script>
-    <script src="../node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
-
+<script src="../vendor/datatables/jquery.dataTables.min.js"></script>
+<script src="../vendor/datatables/dataTables.bootstrap4.min.js"></script>
+<script src="../js/demo/datatables-demo.js"></script>
 
 <script>
     // Show Info Modal
@@ -154,6 +173,8 @@ include 'config/security.php';
                         $("#age").val(res.data.acc_age);
                         $("#birthdate").val(res.data.acc_birth);
                         $("#address").val(res.data.acc_address);
+                        $("#org").val(res.data.acc_org);
+
                     }else{
                         alert(res.message);
                     }

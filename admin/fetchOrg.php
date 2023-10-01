@@ -23,10 +23,12 @@ include 'config/security.php';
                     $res_fetch = $fetchOrg->fetchData($value);
 
                     if($res_fetch){
-                        while($row = $res_fetch->fetch()){
+                        $count = $res_fetch->rowCount();
+                        for($x=1; $x<=$count; ++$x){
+                            $row = $res_fetch->fetch();
                             ?>
-                            <tr>
-                                <td><?=$row['org_id']?></td>
+                            
+                                <td><?=$x;?></td>
                                 <td><?=$row['org_name']?></td>
                                 <td><?=$row['org_establish']?></td>
                                 <td><?=$row['org_brgy']?></td>
@@ -41,7 +43,15 @@ include 'config/security.php';
                                         }
                                     ?>
                                 <td class="text-center">
-                                    <button class="btn btn-success btn-sm" id="viewOrganization" value="<?=$row['org_id']?>"><i class="fa fa-eye"></i></button>
+                                <?php
+                                        if($row['org_status']=="Accept"){
+                                            ?>
+                                            <a class="btn btn-success btn-sm" href="view_member_org.php?org_name=<?=$row['org_name']?>"><i class="fa fa-eye"></i></a>
+                                            <?php
+                                        }
+                                    ?>
+                                    
+                                    <button class="btn btn-primary btn-sm" id="viewOrganization" value="<?=$row['org_id']?>"><i class="fa fa-edit"></i></button>
                                 </td>
                             </tr>
                             <?php
@@ -71,55 +81,14 @@ include 'config/security.php';
                         <div>
                                 <div>
                                     <div class="form-group">
-                                        <label for="">Organization Name</label>
+                                        <label for="">Organization Name:</label>
                                         <input type="text" name="org_name" id="org_name" class="form-control org-box" required>
                                     </div>
                                     <div class="form-group">
                                         <label for="">Year Establish:</label>
                                         <input type="date" name="org_date" id="org_date" class="form-control" required>
                                     </div>
-                                    <div class="text-center py-4">
-                                        <h1 class="fs-1"><b>-- Officer List --</b></h1>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="">President:</label>
-                                        <select name="org_press" id="org_press" class="form-control org-box text-center">
-                                            <?php
-                                                $member = new memberOrg();
-                                                $result = $member->fetchData();
-                                                if($result){
-                                                    while($fetch = $result->fetch()){
-                                                        ?>
-                                                            <option value="<?=$fetch['acc_fname']." ".$fetch['acc_mname']." ".$fetch['acc_lname']?>">
-                                                                <?=$fetch['acc_fname']." ".$fetch['acc_mname']." ".$fetch['acc_lname']?>
-                                                            </option>
-                                                        <?php
-                                                    }
-                                                }
-                                            ?>
-                                        </select>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="">Vice-President:</label>
-                                        <select name="org_vpress" id="org_vpress" class="form-control org-box text-center">
-                                            <?php
-                                                $member = new memberOrg();
-                                                $result = $member->fetchData();
-                                                if($result){
-                                                    while($fetch = $result->fetch()){
-                                                        ?>
-                                                            <option value="<?=$fetch['acc_fname']." ".$fetch['acc_mname']." ".$fetch['acc_lname']?>">
-                                                                <?=$fetch['acc_fname']." ".$fetch['acc_mname']." ".$fetch['acc_lname']?>
-                                                            </option>
-                                                        <?php
-                                                    }
-                                                }
-                                            ?>
-                                        </select>
-                                    </div>
-                                   
-                                </div>
-                            
+                                </div>     
                         </div>
                     </div>
                     <div class="modal-footer">

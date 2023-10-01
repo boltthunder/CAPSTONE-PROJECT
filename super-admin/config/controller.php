@@ -141,9 +141,9 @@ class modalOrg extends Database{
     private $view_org_id;
     public function showData($view_org_id){
     
-        $stmt = $this->connect()->query("SELECT * FROM `tbl_org` WHERE org_id='$view_org_id ' ");
+        $stmt = $this->connect()->query("SELECT * FROM `tbl_org_member` WHERE mem_orgname='$view_org_id ' ");
 
-        if($stmt->rowCount()==1){
+        if($stmt->rowCount()){
             return $stmt;
         }else{
             return false;
@@ -252,6 +252,7 @@ class show_info extends Database{
         $stmt_run = $this->connect()->query("SELECT * FROM `tbl_accounts` WHERE `acc_admin_id`='$id' ");
 
         if($stmt_run->rowCount()){
+            $this->connect()->query("UPDATE `tbl_accounts` SET acc_check='View' WHERE acc_admin_id='$id' ");
             return $stmt_run;
         }else{
             return false;
@@ -287,7 +288,7 @@ class fetchUser extends Database{
         if($fetch->rowCount()){
             $fetch_info = $fetch->fetch();
             if($value =="All"){
-                $stmt = "SELECT * FROM tbl_accounts WHERE acc_type='user' ";
+                $stmt = "SELECT * FROM tbl_accounts WHERE acc_type='user' AND acc_status='Accept' ";
                 $stmt_run = $this->connect()->query($stmt);
         
                 if($stmt_run->rowCount()){
@@ -297,9 +298,9 @@ class fetchUser extends Database{
                 }
             }
             else {
-                $stmt = "SELECT * FROM tbl_accounts WHERE acc_type='user' AND acc_status='$value' ";
-                $stmt_run = $this->connect()->query($stmt);
-        
+                $stmt = "SELECT * FROM tbl_accounts WHERE acc_type='user' AND acc_address=? AND acc_status='Accept' ";
+                $stmt_run = $this->connect()->prepare($stmt);
+                $stmt_run->execute([$value]);
                 if($stmt_run->rowCount()){
                     return $stmt_run;
                 }else{
@@ -357,13 +358,54 @@ class delete_user extends Database{
 
 class check_user extends Database{
     public function checking(){
-        $stmt = "SELECT * FROM tbl_accounts WHERE acc_type='user' AND acc_status='Pending' ";
+        $stmt = "SELECT * FROM tbl_accounts WHERE acc_type='user' AND acc_status='Accept' AND acc_check='Not View' ";
         $stmt_run = $this->connect()->query($stmt);
         if($stmt_run->rowCount()>0){
-           echo "<span class='badge badge-dark'>".$stmt_run->rowCount()."</span>";
+           return $stmt_run;
 
         }else{
             return false;   
+        }
+    }
+}
+
+
+
+class fetch_org_mem extends Database{
+    public function fetchData($value){
+       if($value == "All"){
+        $stmt = "SELECT * FROM tbl_org";
+        $stmt_run = $this->connect()->query($stmt);
+
+        if($stmt_run->rowCount()>0){
+            return $stmt_run;
+        }else{
+            return false;
+        }
+       }else{
+        $stmt = "SELECT * FROM tbl_org WHERE org_brgy=? ";
+        $stmt_run = $this->connect()->prepare($stmt);
+        $stmt_run->execute([$value]);
+
+        if($stmt_run->rowCount()>0){
+            return $stmt_run;
+        }else{
+            return false;
+        }
+       }
+    }
+}
+class count_mem extends Database{
+    public function countData($counting){
+        $stmt = "SELECT * FROM tbl_org WHERE org_name=? ";
+        $stmt_run = $this->connect()->prepare($stmt);
+        $stmt_run->execute([$counting]);
+
+
+        if($stmt_run->rowCount()>0){
+            echo $stmt_run->rowCount();
+        }else{
+            return false;
         }
     }
 }

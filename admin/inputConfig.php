@@ -4,11 +4,9 @@ include 'config/security.php';
  if(isset($_POST['add_org_list']) && $_POST['function'] == "add_org_list"){
     $org_name = secured($_POST['org_name']);
     $org_date = secured($_POST['org_date']);
-    $org_press = secured($_POST['org_press']);
-    $org_vpress = secured($_POST['org_vpress']);
 
     $add_org = new add_org();
-    $add_org->addData($org_name,$org_date,$org_press,$org_vpress);
+    $add_org->addData($org_name,$org_date);
 }else if(isset($_POST['view_org_id']) && $_POST['function'] == "view_org_id"){
     $view_org_id = secured($_POST['view_org_id']);
 
@@ -29,11 +27,8 @@ include 'config/security.php';
     $org_id = secured($_POST['org_id']);
     $org_name = secured($_POST['org_name']);
     $org_date = secured($_POST['org_date']);
-    $org_press = secured($_POST['org_press']);
-    $org_vpress = secured($_POST['org_vpress']);
-
     $org_update = new orgUpdate();
-    $org_update->updateData($org_id,$org_name,$org_date,$org_press,$org_vpress);
+    $org_update->updateData($org_id,$org_name,$org_date);
 }else if(isset($_POST['delete_org_list']) && $_POST['function'] == "update_delete_org"){
     $org_id = secured($_POST['org_id']);
 
@@ -112,6 +107,18 @@ include 'config/security.php';
     $delete_admin = new delete_admin();
     $delete_admin->deleteData($acc_id,$type_user);
 
+}else if(isset($_POST['add_org_member']) && $_POST['function'] == "add_org_member"){
+    $acc_id = secured($_POST['member_id']);
+    $position = secured($_POST['mem_position']);
+
+    $add_org_mem = new addOrgMem();
+    $add_org_mem->addData($acc_id,$position);
+}else if(isset($_POST['delete_org_mem']) && $_POST['function'] == "delete_org_mem"){
+    $acc_id = secured($_POST['acc_id']);
+    $acc_org = secured($_POST['org']);
+    
+    $delete_org_mem = new deleteOrgMem();
+    $delete_org_mem->deleteData($acc_id,$acc_org);
 }else {
     header("Location: index.php");
 }

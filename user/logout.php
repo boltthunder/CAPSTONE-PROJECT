@@ -1,5 +1,6 @@
 <?php
-include 'config/security.php';
+include 'include/autoload.php';
+
 
 session_unset();
 session_destroy();

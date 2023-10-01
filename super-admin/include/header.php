@@ -110,11 +110,14 @@
                     <span>Manage Admin</span></a>
             </li>
             <li class="nav-item <?php if($_SESSION['title']=="Manage User"){echo "active";}?>">
-                <a class="nav-link <?php if($_SESSION['title']=="Manage User"){echo "active";}?>" href="manage-user.php">
+                <a class="nav-link <?php if($_SESSION['title']=="Manage User"){echo "active";}?>" href="user-list.php">
                     <i class="fas fa-fw fa-user"></i>
-                    <span>Manage User 
+                    <span>User List 
                         <?php $checking = new check_user(); 
-                                $checking->checking();
+                                $result = $checking->checking();
+                                if($result){
+                                    echo "<span class='badge badge-dark'>".$result->rowCount()."</span>";
+                                }
                         ?>
                     </span>
                 </a>

@@ -69,8 +69,7 @@ class logginIn extends Database
 }
 class create_user extends Database
 {
-    private $profile_img, $fname, $mname, $lname, $email, $phone, $age, $birthdate, $address, $uname, $password;
-    public function addData($profile_img, $fname, $mname, $lname, $email, $phone, $age, $birthdate, $address, $uname, $password)
+    public function addData($profile_img, $fname, $mname, $lname, $email, $phone, $age, $birthdate, $address,$org, $uname, $password)
     {
         $target_dir = "upload/";
         $target_file = $target_dir . basename($profile_img);
@@ -96,8 +95,8 @@ class create_user extends Database
                 </script>
                 <?php
             } else {
-                $add_user = "INSERT INTO `tbl_accounts`(`acc_admin_id`, `acc_fname`, `acc_mname`, `acc_lname`, `acc_email`, `acc_age`, `acc_phone`,  `acc_birth`, `acc_address`, `acc_uname`, `acc_password`,`acc_profile`,`acc_type`,`acc_status`) 
-                VALUES ('" . rand() . "','$fname','$mname','$lname','$email','$age','$phone','$birthdate','$address','$uname','" . md5($password) . "','$profile_img','user','Pending')";
+                $add_user = "INSERT INTO `tbl_accounts`(`acc_admin_id`, `acc_fname`, `acc_mname`, `acc_lname`, `acc_email`, `acc_age`, `acc_phone`,  `acc_birth`, `acc_address`,`acc_org`, `acc_uname`, `acc_password`,`acc_profile`,`acc_type`,`acc_status`,`acc_check`) 
+                VALUES ('" . rand() . "','$fname','$mname','$lname','$email','$age','$phone','$birthdate','$address','$org','$uname','" . md5($password) . "','$profile_img','user','Pending','Not View')";
                 $add_user_run = $this->connect()->query($add_user);
 
                 if ($add_user_run) {
@@ -136,6 +135,21 @@ class fetchBrgy extends Database
             return $stmt_run;
         } else {
             return false;
+        }
+    }
+}
+class fetchOrg extends Database{
+    public function fetchData($value){
+        $stmt = "SELECT * FROM tbl_org WHERE org_brgy=?";
+        $stmt_run = $this->connect()->prepare($stmt);
+        $stmt_run->execute([$value]);
+
+        if($stmt_run->rowCount()>0){
+            while($row = $stmt_run->fetch()){
+                echo "<option class='text-center'>".$row['org_name']."</option>";
+            }
+        }else{
+            echo "<option disabled selected>------</option>";
         }
     }
 }

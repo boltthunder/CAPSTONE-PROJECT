@@ -7,10 +7,31 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-            <div class="text-center">
-                <img src="" alt="" width="100" height="100" style="border-radius:50%"><br>
-                <a href="" class="nav-link">Update Profile</a>
+        <div class="col-12 py-3">
+            <div class="row">
+                <div class="col-xl-4 col-lg-4 col-12 text-center">
+                <?php
+                $user_id = $_SESSION['user_id'];
+                $user_info = new fetch();
+                $result = $user_info->checkInfo($user_id);
+
+                if($result){
+                    $row = $result->fetch();
+                    ?>
+                    <img class="border bg-secondary" src="../upload/<?=$row['acc_profile']?>" alt="" width="120" height="150"><br>
+                    <a href="profile.php" class="fs-6">Update Profile</a>
+                </div>
+                <div class="col-xl-8 col-lg-8 col-12  d-flex">
+                    <div class="align-items-center">
+                        <label for="">Name: <?=$row['acc_fname']?> <?=$row['acc_mname']?> <?=$row['acc_lname']?></label><br>
+                        <label for="">Adress: <?=$row['acc_address']?></label><br>
+                        <label for="">Email: <?=$row['acc_email']?></label><br>
+                        <label for="">UserName: <?=$row['acc_uname']?></label><br>
+                    </div>
+                </div>
+                <?php }?>
             </div>
+        </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>

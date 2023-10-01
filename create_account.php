@@ -7,7 +7,7 @@ include 'config/controller.php';
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
+    <title>HWFMS || Create Account</title>
     <link rel="stylesheet" href="include/css/index.css">
     <link rel="stylesheet" href="include/css/mobile.css">
     <link rel="stylesheet" href="dist/output.css">
@@ -129,7 +129,7 @@ include 'config/controller.php';
                                             <div class="col-xl-4 col-lg-4 col-12 px-xl-1 px-lg-1 xl-py-3 lg-py-3 py-2">
                                                 <label for="address">Select your barangay</label>
                                                 <select name="address" class="form-control appearance-none text-center"
-                                                    aria-describedby="address" placeholder="address" required>
+                                                    aria-describedby="address" placeholder="address" required id="address">
                                                     <option value="" disabled selected>Please Select</option>
                                                     <?php
                                                     $fetch_user = new fetchBrgy();
@@ -146,6 +146,13 @@ include 'config/controller.php';
                                                     }
                                                     ?>
                                                 </select>
+                                            </div>
+                                            <div class="col-xl-4 col-lg-4 col-12 px-xl-1 px-lg-1 xl-py-3 lg-py-3 py-2" >
+                                            <label for="org">Organization</label>
+                                            <select name="org" class="form-control appearance-none text-center"
+                                                aria-describedby="org" placeholder="org" id="org">
+                                                <option disabled selected>------</option>
+                                            </select>
                                             </div>
                                         </div>
 
@@ -198,6 +205,22 @@ include 'config/controller.php';
 
 
     <script>
+
+        $(document).ready(function(){
+            $("#address").change(function(){
+                var value = $("#address").val();
+                // alert(value);
+                $.ajax({
+                    method:"POST",
+                    url:"inputConfig.php",
+                    data:{value: value, function:"getOrg"},
+                    success:function(response){
+                        $("#org").html(response)
+                    },
+                });
+            });
+        });
+
         var loadfile = function (event) {
             var output = document.getElementById('output');
             output.src = URL.createObjectURL(event.target.files[0]);
