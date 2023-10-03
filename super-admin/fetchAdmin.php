@@ -111,7 +111,7 @@ include 'config/security.php';
 
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-secondary bg-secondary" type="button" data-dismiss="modal">Cancel</button>
+                    <button class="btn btn-secondary bg-secondary" id="close" type="button" data-dismiss="modal">Cancel</button>
                     <button type="submit" class="btn btn-danger bg-danger" name="delete_admin">Delete</button>
                 </div>
             </form>
@@ -125,6 +125,9 @@ include 'config/security.php';
     <script src="../node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
     
 <script>
+
+    
+
     // Show Info Modal
     $(document).on('click','#view_admin',function(){
         var value = $(this).val();

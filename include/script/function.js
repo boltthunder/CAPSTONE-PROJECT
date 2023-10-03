@@ -12,6 +12,11 @@ $("#password, #confirm-password").on('keyup', function() {
     }
 });
 
+$(document).on('click', function() {
+    $('#close').show();
+    $('#view-admin').modal('hide');
+})
+
 
 function showpass() {
     if (this.checked) {
